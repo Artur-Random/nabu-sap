@@ -161,6 +161,12 @@
       line-height: 1.5;
     }
 
+    .donate-image {
+      width: min(360px, 100%);
+      height: auto;
+      object-fit: contain;
+    }
+
     .screen-actions {
       display: flex;
       gap: 12px;
@@ -337,6 +343,10 @@
         font-size: 18px;
       }
 
+      .donate-image {
+        max-width: 320px;
+      }
+
       .countdown {
         font-size: 96px;
       }
@@ -374,7 +384,7 @@
           </div>
 
           <div id="started" class="screen">
-            <h2>COMING SOON</h2>
+            <h2>GAME STARTED</h2>
             <div class="screen-actions">
               <button class="btn secondary" data-action="back">Back</button>
               <button class="btn secondary" data-action="menu">Main menu</button>
@@ -391,7 +401,7 @@
 
           <div id="atomic" class="screen">
             <h2>LAUNCH ATOMIC</h2>
-            <p>ГАМЕ ОВЕР, СУКА</p>
+            <p>Атомная волна активирована. Держи темп и не отпускай кнопку.</p>
             <div class="screen-actions">
               <button class="btn secondary" data-action="back">Back</button>
               <button class="btn secondary" data-action="menu">Main menu</button>
@@ -400,7 +410,7 @@
 
           <div id="shutup" class="screen">
             <h2>SHUT THE FUCK UP</h2>
-            <p>COMING SOON</p>
+            <p>Тишина включена. Все лишние шумы приглушены до минимума.</p>
             <div class="screen-actions">
               <button class="btn secondary" data-action="back">Back</button>
               <button class="btn secondary" data-action="menu">Main menu</button>
@@ -409,7 +419,12 @@
 
           <div id="donate" class="screen">
             <h2>DONATE $40.000</h2>
-            <p>Взнос принят мысленно. Спасибо за поддержку красного режима.</p>
+            <div class="typing" id="donate-typing"></div>
+            <img
+              class="donate-image"
+              src="assets/wassap.png"
+              alt="Donation result"
+            />
             <div class="screen-actions">
               <button class="btn secondary" data-action="back">Back</button>
               <button class="btn secondary" data-action="menu">Main menu</button>
@@ -429,6 +444,7 @@
         <video id="atomic-video" src="assets/vivid.mp4" muted playsinline></video>
       </div>
       <audio id="atomic-audio" src="assets/atamne.ogg"></audio>
+      <audio id="donate-audio" src="assets/zvuk.mp3"></audio>
     </main>
   </div>
 
@@ -441,15 +457,18 @@
     const startActions = document.querySelector("#start-actions");
     const startOk = document.querySelector("#start-ok");
     const startExit = document.querySelector("#start-exit");
+    const donateTyping = document.querySelector("#donate-typing");
     const characterImage = document.querySelector("#character-image");
     const countdownOverlay = document.querySelector("#countdown-overlay");
     const countdownNumber = document.querySelector("#countdown-number");
     const videoFrame = document.querySelector("#video-frame");
     const atomicVideo = document.querySelector("#atomic-video");
     const atomicAudio = document.querySelector("#atomic-audio");
+    const donateAudio = document.querySelector("#donate-audio");
 
     let typingTimer = null;
     let countdownTimer = null;
+    let donateTimer = null;
     const screenStack = ["menu"];
 
     const resetAtomic = () => {
@@ -476,6 +495,16 @@
       characterImage.classList.remove("swap");
     };
 
+    const resetDonateScreen = () => {
+      if (donateTimer) {
+        clearInterval(donateTimer);
+        donateTimer = null;
+      }
+      donateTyping.textContent = "";
+      donateAudio.pause();
+      donateAudio.currentTime = 0;
+    };
+
     const showScreen = (id, options = { push: true }) => {
       if (typingTimer) {
         clearInterval(typingTimer);
@@ -497,6 +526,13 @@
         startTyping();
       } else if (id !== "gameover") {
         characterImage.classList.remove("swap");
+      }
+
+      if (id === "donate") {
+        resetDonateScreen();
+        startDonateTyping();
+      } else {
+        resetDonateScreen();
       }
 
       if (id !== "atomic") {
@@ -557,6 +593,24 @@
         }
         countdownNumber.textContent = String(count);
       }, 1000);
+    };
+
+    const startDonateTyping = () => {
+      const message =
+        "З ВАШОЇ КАРТКИ СПИСАЛИ СОРОК ТИСЯЧ.\n" +
+        "ДЯКУЮ!\n" +
+        "ЗАКРИЙ ПИЗДАК";
+      let index = 0;
+      donateAudio.currentTime = 0;
+      donateAudio.play().catch(() => {});
+      donateTimer = setInterval(() => {
+        donateTyping.textContent = message.slice(0, index);
+        index += 1;
+        if (index > message.length) {
+          clearInterval(donateTimer);
+          donateTimer = null;
+        }
+      }, 18);
     };
 
     const frame = document.querySelector(".app");
