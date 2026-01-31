@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FUCK NABU&SAP</title>
+  <style>
+    :root {
+      --red: #ed1b2f;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--white);
+      color: #101010;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app {
+      width: 1280px;
+      height: 720px;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .bar {
+      height: 90px;
+      background: var(--red);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+    }
+
+    .bar.bottom {
+      margin-top: auto;
+    }
+
+    .bar h1 {
+      font-size: 44px;
+      letter-spacing: 1px;
+      color: var(--white);
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 60px;
+      gap: 40px;
+    }
+
+    .panel {
+      flex: 1 1 55%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .character {
+      flex: 1 1 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .character img {
+      height: 520px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      padding: 12px 0;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: var(--red);
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .btn {
+      border: 2px solid var(--red);
+      background: var(--red);
+      color: var(--white);
+      padding: 18px 26px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-align: left;
+      width: 380px;
+      box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(237, 27, 47, 0.3);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--red);
+      width: 220px;
+      font-size: 16px;
+      padding: 12px 18px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="bar">
+      <h1>FUCK NABU&SAP</h1>
+    </header>
+    <section class="content">
+      <div class="panel">
+        <div id="menu" class="screen active">
+          <div class="btn-group">
+            <button class="btn" data-target="start">START FUCKING</button>
+            <button class="btn" data-target="atomic">LAUNCH ATOMIC</button>
+            <button class="btn" data-target="shutup">SHUT THE FUCK UP</button>
+            <button class="btn" data-target="donate">DONATE $40.000</button>
+          </div>
+        </div>
+
+        <div id="start" class="screen">
+          <h2>START FUCKING</h2>
+          <p>Режим запуска: двигайся вперёд и ломай систему с красным ускорением.</p>
+          <button class="btn secondary" data-target="menu">Back to menu</button>
+        </div>
+
+        <div id="atomic" class="screen">
+          <h2>LAUNCH ATOMIC</h2>
+          <p>Атомная волна активирована. Держи темп и не отпускай кнопку.</p>
+          <button class="btn secondary" data-target="menu">Back to menu</button>
+        </div>
+
+        <div id="shutup" class="screen">
+          <h2>SHUT THE FUCK UP</h2>
+          <p>Тишина включена. Все лишние шумы приглушены до минимума.</p>
+          <button class="btn secondary" data-target="menu">Back to menu</button>
+        </div>
+
+        <div id="donate" class="screen">
+          <h2>DONATE $40.000</h2>
+          <p>Взнос принят мысленно. Спасибо за поддержку красного режима.</p>
+          <button class="btn secondary" data-target="menu">Back to menu</button>
+        </div>
+      </div>
+
+      <aside class="character">
+        <img src="assets/character.png" alt="Character" />
+      </aside>
+    </section>
+    <footer class="bar bottom" aria-hidden="true"></footer>
+  </main>
+
+  <script>
+    const screens = document.querySelectorAll(".screen");
+    const buttons = document.querySelectorAll("[data-target]");
+
+    const showScreen = (id) => {
+      screens.forEach((screen) => {
+        screen.classList.toggle("active", screen.id === id);
+      });
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.target;
+        showScreen(target);
+      });
+    });
+  </script>
+</body>
+</html>
