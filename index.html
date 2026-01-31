@@ -24,6 +24,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+
+    .viewport {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
     }
 
     .app {
@@ -34,6 +44,8 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      transform: scale(var(--scale, 1));
+      transform-origin: center;
     }
 
     .bar {
@@ -154,52 +166,54 @@
   </style>
 </head>
 <body>
-  <main class="app">
-    <header class="bar">
-      <h1>FUCK NABU&SAP</h1>
-    </header>
-    <section class="content">
-      <div class="panel">
-        <div id="menu" class="screen active">
-          <div class="btn-group">
-            <button class="btn" data-target="start">START FUCKING</button>
-            <button class="btn" data-target="atomic">LAUNCH ATOMIC</button>
-            <button class="btn" data-target="shutup">SHUT THE FUCK UP</button>
-            <button class="btn" data-target="donate">DONATE $40.000</button>
+  <div class="viewport">
+    <main class="app">
+      <header class="bar">
+        <h1>FUCK NABU&SAP</h1>
+      </header>
+      <section class="content">
+        <div class="panel">
+          <div id="menu" class="screen active">
+            <div class="btn-group">
+              <button class="btn" data-target="start">START FUCKING</button>
+              <button class="btn" data-target="atomic">LAUNCH ATOMIC</button>
+              <button class="btn" data-target="shutup">SHUT THE FUCK UP</button>
+              <button class="btn" data-target="donate">DONATE $40.000</button>
+            </div>
+          </div>
+
+          <div id="start" class="screen">
+            <h2>START FUCKING</h2>
+            <p>Режим запуска: двигайся вперёд и ломай систему с красным ускорением.</p>
+            <button class="btn secondary" data-target="menu">Back to menu</button>
+          </div>
+
+          <div id="atomic" class="screen">
+            <h2>LAUNCH ATOMIC</h2>
+            <p>Атомная волна активирована. Держи темп и не отпускай кнопку.</p>
+            <button class="btn secondary" data-target="menu">Back to menu</button>
+          </div>
+
+          <div id="shutup" class="screen">
+            <h2>SHUT THE FUCK UP</h2>
+            <p>Тишина включена. Все лишние шумы приглушены до минимума.</p>
+            <button class="btn secondary" data-target="menu">Back to menu</button>
+          </div>
+
+          <div id="donate" class="screen">
+            <h2>DONATE $40.000</h2>
+            <p>Взнос принят мысленно. Спасибо за поддержку красного режима.</p>
+            <button class="btn secondary" data-target="menu">Back to menu</button>
           </div>
         </div>
 
-        <div id="start" class="screen">
-          <h2>START FUCKING</h2>
-          <p>Режим запуска: двигайся вперёд и ломай систему с красным ускорением.</p>
-          <button class="btn secondary" data-target="menu">Back to menu</button>
-        </div>
-
-        <div id="atomic" class="screen">
-          <h2>LAUNCH ATOMIC</h2>
-          <p>Атомная волна активирована. Держи темп и не отпускай кнопку.</p>
-          <button class="btn secondary" data-target="menu">Back to menu</button>
-        </div>
-
-        <div id="shutup" class="screen">
-          <h2>SHUT THE FUCK UP</h2>
-          <p>Тишина включена. Все лишние шумы приглушены до минимума.</p>
-          <button class="btn secondary" data-target="menu">Back to menu</button>
-        </div>
-
-        <div id="donate" class="screen">
-          <h2>DONATE $40.000</h2>
-          <p>Взнос принят мысленно. Спасибо за поддержку красного режима.</p>
-          <button class="btn secondary" data-target="menu">Back to menu</button>
-        </div>
-      </div>
-
-      <aside class="character">
-        <img src="assets/character.png" alt="Character" />
-      </aside>
-    </section>
-    <footer class="bar bottom" aria-hidden="true"></footer>
-  </main>
+        <aside class="character">
+          <img src="assets/character.png" alt="Character" />
+        </aside>
+      </section>
+      <footer class="bar bottom" aria-hidden="true"></footer>
+    </main>
+  </div>
 
   <script>
     const screens = document.querySelectorAll(".screen");
@@ -211,12 +225,25 @@
       });
     };
 
+    const frame = document.querySelector(".app");
+
+    const updateScale = () => {
+      const scale = Math.min(
+        window.innerWidth / 1280,
+        window.innerHeight / 720
+      );
+      frame.style.setProperty("--scale", scale.toString());
+    };
+
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
         const target = button.dataset.target;
         showScreen(target);
       });
     });
+
+    window.addEventListener("resize", updateScale);
+    updateScale();
   </script>
 </body>
 </html>
