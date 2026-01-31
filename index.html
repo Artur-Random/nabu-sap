@@ -164,6 +164,17 @@
       font-size: 12px;
     }
 
+    @media (max-width: 900px) {
+      body {
+        overflow: auto;
+      }
+
+      .app {
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+
     @media (max-width: 900px) and (orientation: landscape) {
       .bar {
         height: 70px;
@@ -296,6 +307,11 @@
     const frame = document.querySelector(".app");
 
     const updateScale = () => {
+      if (window.innerWidth <= 900) {
+        frame.style.setProperty("--scale", "1");
+        return;
+      }
+
       const scale = Math.min(
         window.innerWidth / 1280,
         window.innerHeight / 720
