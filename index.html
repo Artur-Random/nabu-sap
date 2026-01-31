@@ -163,6 +163,74 @@
       letter-spacing: 1.2px;
       font-size: 12px;
     }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      .bar {
+        height: 70px;
+        padding: 0 28px;
+      }
+
+      .bar h1 {
+        font-size: 30px;
+      }
+
+      .content {
+        padding: 20px 28px;
+        gap: 20px;
+      }
+
+      .btn {
+        width: 300px;
+        font-size: 18px;
+        padding: 14px 20px;
+      }
+
+      .character img {
+        height: 360px;
+      }
+    }
+
+    @media (max-width: 700px) and (orientation: portrait) {
+      .bar {
+        height: 72px;
+        padding: 0 24px;
+        justify-content: center;
+      }
+
+      .bar h1 {
+        font-size: 28px;
+        text-align: center;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px 24px;
+        gap: 20px;
+      }
+
+      .panel {
+        align-items: center;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 360px;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .screen {
+        align-items: center;
+        text-align: center;
+      }
+
+      .character img {
+        height: 300px;
+      }
+    }
   </style>
 </head>
 <body>
