@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no"
   />
-  <title>ZHYNKA: Night Provocation</title>
+  <title>ZHYNKA 1</title>
   <style>
     :root {
       --red: #ed1b2f;
@@ -73,14 +73,13 @@
     }
 
     .bar h1 {
-      font-size: clamp(18px, 3.2vw, 44px);
+      font-size: clamp(22px, 4vw, 44px);
       letter-spacing: 1px;
       color: var(--white);
       white-space: nowrap;
-      overflow: visible;
-      text-overflow: unset;
-}
-
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     .content {
@@ -359,7 +358,7 @@
   <div class="viewport">
     <main class="app">
       <header class="bar">
-        <h1>ZHYNKA: Night Provocation</h1>
+        <h1>ZHYNKA 1</h1>
       </header>
       <section class="content">
         <div class="panel">
@@ -560,7 +559,7 @@
 
     const startTyping = () => {
       const message =
-        "ВІТАЮ! ВИ ПОЧАЛИ ГРУ \"ZHYNKA: Night Provocation\".\n" +
+        "ВІТАЮ! ВИ ПОЧАЛИ ГРУ \"ZHYNKA 1\".\n" +
         "ЩОБ ПОЧАТИ ТРАХАТИ НАТИСНІТЬ \"OK\",\n" +
         "ЩОБ СТАТИ ТВІНКОМ І ОТРИМАТИ ПЛЯШКУ\n" +
         "АРТЕМІВСЬКОГО В ДУПУ НАТИСНІТЬ \"EXIT\".";
