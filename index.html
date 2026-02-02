@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no"
+  />
+  <title>FUCK NABU&SAP</title>
+  <style>
+    :root {
+      --red: #ed1b2f;
+      --white: #ffffff;
+    }
+
+    @font-face {
+      font-family: "CGXYZPCAlt";
+      src: url("assets/fonts/CGXYZPCAlt-Regular.otf") format("opentype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "CGXYZPCAlt", "Helvetica Neue", Arial, sans-serif;
+      background: var(--white);
+      color: #101010;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .viewport {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+    }
+
+    .app {
+      width: 1280px;
+      height: 720px;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: scale(var(--scale, 1));
+      transform-origin: center;
+    }
+
+    .bar {
+      height: 90px;
+      background: var(--red);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+    }
+
+    .bar.bottom {
+      margin-top: auto;
+    }
+
+    .bar h1 {
+      font-size: 44px;
+      letter-spacing: 1px;
+      color: var(--white);
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 60px;
+      gap: 40px;
+    }
+
+    .panel {
+      flex: 1 1 55%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-self: stretch;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .character {
+      flex: 1 1 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .character img {
+      height: 520px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .character img.swap {
+      content: url("assets/artem.png");
+    }
+
+    .character img.donate-swap {
+      content: url("assets/wassap.png");
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+      z-index: 5;
+    }
+
+    .overlay.hidden {
+      display: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .countdown {
+      font-size: 140px;
+      color: var(--red);
+    }
+
+    .video-frame {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+    }
+
+    .video-frame.hidden {
+      display: none;
+    }
+
+    .video-frame video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .typing {
+      min-height: 140px;
+      white-space: pre-line;
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .screen-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      padding: 12px 0;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: var(--red);
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .btn {
+      border: 2px solid var(--red);
+      background: var(--red);
+      color: var(--white);
+      padding: 18px 26px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-align: left;
+      width: 380px;
+      box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(237, 27, 47, 0.3);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--red);
+      width: 220px;
+      font-size: 16px;
+      padding: 12px 18px;
+    }
+
+    .btn.small {
+      width: auto;
+      font-size: 18px;
+      padding: 12px 20px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        overflow: auto;
+      }
+
+      .app {
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      .bar {
+        height: 70px;
+        padding: 0 28px;
+      }
+
+      .bar h1 {
+        font-size: 30px;
+      }
+
+      .content {
+        padding: 20px 28px;
+        gap: 20px;
+      }
+
+      .btn {
+        width: 300px;
+        font-size: 18px;
+        padding: 14px 20px;
+      }
+
+      .btn.small {
+        font-size: 16px;
+        padding: 10px 16px;
+      }
+
+      .character img {
+        height: 360px;
+      }
+    }
+
+    @media (max-width: 700px) and (orientation: portrait) {
+      .bar {
+        height: 72px;
+        padding: 0 24px;
+        justify-content: center;
+      }
+
+      .bar h1 {
+        font-size: 28px;
+        text-align: center;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 20px 24px;
+        gap: 20px;
+      }
+
+      .panel {
+        align-items: center;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 360px;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .btn.small,
+      .btn.secondary {
+        width: auto;
+      }
+
+      .screen {
+        align-items: center;
+        text-align: center;
+      }
+
+      .screen-actions {
+        justify-content: center;
+      }
+
+      .character img {
+        height: 300px;
+      }
+
+      .typing {
+        font-size: 18px;
+      }
+
+      .countdown {
+        font-size: 96px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <main class="app">
+      <header class="bar">
+        <h1>FUCK NABU&SAP</h1>
+      </header>
+      <section class="content">
+        <div class="panel">
+          <div id="menu" class="screen active">
+            <div class="btn-group">
+              <button class="btn" data-target="start">START FUCKING</button>
+              <button class="btn" data-target="atomic">LAUNCH ATOMIC</button>
+              <button class="btn" data-target="shutup">SHUT THE FUCK UP</button>
+              <button class="btn" data-target="donate">DONATE $40.000</button>
+            </div>
+          </div>
+
+          <div id="start" class="screen">
+            <h2>START FUCKING</h2>
+            <div class="typing" id="start-typing"></div>
+            <div class="screen-actions hidden" id="start-actions">
+              <button class="btn small" id="start-ok">OK</button>
+              <button class="btn small secondary" id="start-exit">EXIT</button>
+            </div>
+            <div class="screen-actions">
+              <button class="btn secondary" data-action="back">Back</button>
+              <button class="btn secondary" data-action="menu">Main menu</button>
+            </div>
+          </div>
+
+          <div id="started" class="screen">
+            <h2>GAME STARTED</h2>
+            <div class="screen-actions">
+              <button class="btn secondary" data-action="back">Back</button>
+              <button class="btn secondary" data-action="menu">Main menu</button>
+            </div>
+          </div>
+
+          <div id="gameover" class="screen">
+            <h2>ГАМЕ ОВЕР, СУКА</h2>
+            <div class="screen-actions">
+              <button class="btn secondary" data-action="back">Back</button>
+              <button class="btn secondary" data-action="menu">Main menu</button>
+            </div>
+          </div>
+
+          <div id="atomic" class="screen">
+            <h2>LAUNCH ATOMIC</h2>
+            <p>Атомная волна активирована. Держи темп и не отпускай кнопку.</p>
+            <div class="screen-actions">
+              <button class="btn secondary" data-action="back">Back</button>
+              <button class="btn secondary" data-action="menu">Main menu</button>
+            </div>
+          </div>
+
+          <div id="shutup" class="screen">
+            <h2>SHUT THE FUCK UP</h2>
+            <p>Тишина включена. Все лишние шумы приглушены до минимума.</p>
+            <div class="screen-actions">
+              <button class="btn secondary" data-action="back">Back</button>
+              <button class="btn secondary" data-action="menu">Main menu</button>
+            </div>
+          </div>
+
+          <div id="donate" class="screen">
+            <h2>DONATE $40.000</h2>
+            <div class="typing" id="donate-typing"></div>
+            <div class="screen-actions">
+              <button class="btn secondary" data-action="back">Back</button>
+              <button class="btn secondary" data-action="menu">Main menu</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="character">
+          <img src="assets/character.png" alt="Character" id="character-image" />
+        </aside>
+      </section>
+      <footer class="bar bottom" aria-hidden="true"></footer>
+      <div class="overlay hidden" id="countdown-overlay">
+        <div class="countdown" id="countdown-number">3</div>
+      </div>
+      <div class="video-frame hidden" id="video-frame">
+        <video id="atomic-video" src="assets/vivid.mp4" muted playsinline></video>
+      </div>
+      <audio id="atomic-audio" src="assets/atamne.ogg"></audio>
+      <audio id="donate-audio" src="assets/zvuk.mp3"></audio>
+    </main>
+  </div>
+
+  <script>
+    const screens = document.querySelectorAll(".screen");
+    const buttons = document.querySelectorAll("[data-target]");
+    const actionButtons = document.querySelectorAll("[data-action]");
+
+    const typingTarget = document.querySelector("#start-typing");
+    const startActions = document.querySelector("#start-actions");
+    const startOk = document.querySelector("#start-ok");
+    const startExit = document.querySelector("#start-exit");
+    const donateTyping = document.querySelector("#donate-typing");
+    const characterImage = document.querySelector("#character-image");
+    const countdownOverlay = document.querySelector("#countdown-overlay");
+    const countdownNumber = document.querySelector("#countdown-number");
+    const videoFrame = document.querySelector("#video-frame");
+    const atomicVideo = document.querySelector("#atomic-video");
+    const atomicAudio = document.querySelector("#atomic-audio");
+    const donateAudio = document.querySelector("#donate-audio");
+
+    let typingTimer = null;
+    let countdownTimer = null;
+    let donateTimer = null;
+    const screenStack = ["menu"];
+
+    const resetAtomic = () => {
+      if (countdownTimer) {
+        clearInterval(countdownTimer);
+        countdownTimer = null;
+      }
+      countdownOverlay.classList.add("hidden");
+      videoFrame.classList.add("hidden");
+      countdownNumber.textContent = "3";
+      atomicAudio.pause();
+      atomicAudio.currentTime = 0;
+      atomicVideo.pause();
+      atomicVideo.currentTime = 0;
+    };
+
+    const resetStartScreen = () => {
+      if (typingTimer) {
+        clearInterval(typingTimer);
+        typingTimer = null;
+      }
+      typingTarget.textContent = "";
+      startActions.classList.add("hidden");
+      characterImage.classList.remove("swap");
+    };
+
+    const resetDonateScreen = () => {
+      if (donateTimer) {
+        clearInterval(donateTimer);
+        donateTimer = null;
+      }
+      donateTyping.textContent = "";
+      donateAudio.pause();
+      donateAudio.currentTime = 0;
+    };
+
+    const showScreen = (id, options = { push: true }) => {
+      if (typingTimer) {
+        clearInterval(typingTimer);
+        typingTimer = null;
+      }
+      screens.forEach((screen) => {
+        screen.classList.toggle("active", screen.id === id);
+      });
+
+      if (options.push) {
+        const last = screenStack[screenStack.length - 1];
+        if (last !== id) {
+          screenStack.push(id);
+        }
+      }
+
+      characterImage.classList.remove("donate-swap");
+
+      if (id === "start") {
+        resetStartScreen();
+        startTyping();
+      } else if (id !== "gameover") {
+        characterImage.classList.remove("swap");
+      }
+
+      if (id === "donate") {
+        characterImage.classList.add("donate-swap");
+      }
+
+      if (id === "donate") {
+        resetDonateScreen();
+        startDonateTyping();
+      } else {
+        resetDonateScreen();
+      }
+
+      if (id !== "atomic") {
+        resetAtomic();
+      }
+    };
+
+    const goBack = () => {
+      if (screenStack.length <= 1) {
+        return;
+      }
+      screenStack.pop();
+      const previous = screenStack[screenStack.length - 1] || "menu";
+      showScreen(previous, { push: false });
+    };
+
+    const goMainMenu = () => {
+      screenStack.length = 0;
+      screenStack.push("menu");
+      showScreen("menu", { push: false });
+    };
+
+    const startTyping = () => {
+      const message =
+        "ВІТАЮ! ВИ ПОЧАЛИ ГРУ \"FUCK NABU&SAP\".\n" +
+        "ЩОБ ПОЧАТИ ТРАХАТИ НАТИСНІТЬ \"OK\",\n" +
+        "ЩОБ СТАТИ ТВІНКОМ І ОТРИМАТИ ПЛЯШКУ\n" +
+        "АРТЕМІВСЬКОГО В ДУПУ НАТИСНІТЬ \"EXIT\".";
+      let index = 0;
+      startActions.classList.add("hidden");
+      typingTimer = setInterval(() => {
+        typingTarget.textContent = message.slice(0, index);
+        index += 1;
+        if (index > message.length) {
+          clearInterval(typingTimer);
+          typingTimer = null;
+          startActions.classList.remove("hidden");
+        }
+      }, 18);
+    };
+
+    const runCountdown = () => {
+      resetAtomic();
+      countdownOverlay.classList.remove("hidden");
+      atomicAudio.play().catch(() => {});
+      let count = 3;
+      countdownNumber.textContent = String(count);
+      countdownTimer = setInterval(() => {
+        count -= 1;
+        if (count <= 0) {
+          clearInterval(countdownTimer);
+          countdownTimer = null;
+          countdownOverlay.classList.add("hidden");
+          videoFrame.classList.remove("hidden");
+          atomicVideo.currentTime = 0;
+          atomicVideo.play().catch(() => {});
+          return;
+        }
+        countdownNumber.textContent = String(count);
+      }, 1000);
+    };
+
+    const startDonateTyping = () => {
+      const message =
+        "З ВАШОЇ КАРТКИ СПИСАЛИ СОРОК ТИСЯЧ.\n" +
+        "ДЯКУЮ!\n" +
+        "ЗАКРИЙ ПИЗДАК";
+      let index = 0;
+      donateAudio.currentTime = 0;
+      donateAudio.play().catch(() => {});
+      donateTimer = setInterval(() => {
+        donateTyping.textContent = message.slice(0, index);
+        index += 1;
+        if (index > message.length) {
+          clearInterval(donateTimer);
+          donateTimer = null;
+        }
+      }, 18);
+    };
+
+    const frame = document.querySelector(".app");
+
+    const updateScale = () => {
+      if (window.innerWidth <= 900) {
+        frame.style.setProperty("--scale", "1");
+        return;
+      }
+
+      const scale = Math.min(
+        window.innerWidth / 1280,
+        window.innerHeight / 720
+      );
+      frame.style.setProperty("--scale", scale.toString());
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.target;
+        showScreen(target);
+        if (target === "atomic") {
+          runCountdown();
+        }
+      });
+    });
+
+    actionButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const action = button.dataset.action;
+        if (action === "back") {
+          goBack();
+        } else if (action === "menu") {
+          goMainMenu();
+        }
+      });
+    });
+
+    startOk.addEventListener("click", () => {
+      showScreen("started");
+    });
+
+    startExit.addEventListener("click", () => {
+      characterImage.classList.add("swap");
+      showScreen("gameover");
+    });
+
+    atomicVideo.addEventListener("ended", () => {
+      videoFrame.classList.add("hidden");
+    });
+
+    window.addEventListener("resize", updateScale);
+    updateScale();
+    showScreen("menu");
+  </script>
+</body>
+</html>
